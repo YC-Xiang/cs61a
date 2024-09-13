@@ -1,3 +1,34 @@
+def digit(n, k):
+    """Return the digit that is k from the right of n for positive integers n and k.
+
+    >>> digit(3579, 2)
+    5
+    >>> digit(3579, 0)
+    9
+    >>> digit(3579, 10)
+    0
+    """
+    return (n // 10**k) % 10
+
+
+def middle(a, b, c):
+    """Return the number among a, b, and c that is not the smallest or largest.
+    Assume a, b, and c are all different numbers.
+
+    >>> middle(3, 5, 4)
+    4
+    >>> middle(30, 5, 4)
+    5
+    >>> middle(3, 5, 40)
+    5
+    >>> middle(3, 5, 40)
+    5
+    >>> middle(30, 5, 40)
+    30
+    """
+    return a + b + c - max(a, b, c) - min(a, b, c)
+
+
 def falling(n, k):
     """Compute the falling factorial of n to depth k.
 
@@ -11,11 +42,9 @@ def falling(n, k):
     1
     """
     res = 1
-    while (k):
+    while k > 0:
         res *= n
-        print('DEBUG:', res)
-        n -= 1
-        k -= 1
+        k, n = k - 1, n - 1
     return res
 
 
@@ -40,11 +69,12 @@ def divisible_by_k(n, k):
     0
     """
     count = 0
-    value = k
-    while (n >= value):
-        print(value)
-        value += k
-        count += 1
+    i = 1
+    while i <= n:
+        if i % k == 0:
+            print(i)
+            count += 1
+        i += 1
     return count
 
 def sum_digits(y):
@@ -61,10 +91,11 @@ def sum_digits(y):
     6
     """
     res = 0
-    while (y):
+    while y:
         res += y % 10
-        y //= 10
+        y = y // 10
     return res
+
 
 def double_eights(n):
     """Return true if n has two eights in a row.
@@ -81,8 +112,9 @@ def double_eights(n):
     >>> double_eights(80808080)
     False
     """
-    while (n):
-        if (n % 100 == 88):
-            return True
-        n //= 10
+    while n:
+        if n % 10 == 8:
+            if (n // 10) % 10 == 8:
+                return True
+        n = n // 10
     return False
