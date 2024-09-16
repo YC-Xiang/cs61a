@@ -1,6 +1,5 @@
 from operator import add, sub
 
-
 def a_plus_abs_b(a, b):
     """Return a+abs(b), but without calling abs.
 
@@ -18,7 +17,6 @@ def a_plus_abs_b(a, b):
     else:
         f = add
     return f(a, b)
-
 
 def a_plus_abs_b_syntax_check():
     """Check that you didn't change the return statement of a_plus_abs_b.
@@ -68,9 +66,11 @@ def largest_factor(n):
     1
     """
     res = 1;
-    for i in range(2, n):
+    i = 1;
+    while  i < n:
         if n % i == 0:
             res = i
+        i += 1;
     return res
 
 
