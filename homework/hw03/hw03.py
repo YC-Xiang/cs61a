@@ -1,4 +1,4 @@
-HW_SOURCE_FILE=__file__
+HW_SOURCE_FILE = __file__
 
 
 def num_eights(n):
@@ -24,7 +24,10 @@ def num_eights(n):
     ...       ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'For', 'While'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if n == 0:
+        return 0
+    else:
+        return num_eights(n // 10) + (1 if n % 10 == 8 else 0)
 
 
 def digit_distance(n):
@@ -46,7 +49,10 @@ def digit_distance(n):
     ...       ['For', 'While'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if n < 10:
+        return 0
+    else:
+        return digit_distance(n // 10) + abs(n % 10 - n // 10 % 10)
 
 
 def interleaved_sum(n, odd_func, even_func):
@@ -70,7 +76,20 @@ def interleaved_sum(n, odd_func, even_func):
     >>> check(HW_SOURCE_FILE, 'interleaved_sum', ['BitAnd', 'BitOr', 'BitXor']) # ban bitwise operators, don't worry about these if you don't know what they are
     True
     """
-    "*** YOUR CODE HERE ***"
+
+    def sum_odd(k):
+        if k > n:
+            return 0
+        else:
+            return sum_odd(k + 2) + odd_func(k)
+
+    def sum_even(k):
+        if k > n:
+            return 0
+        else:
+            return sum_even(k + 2) + even_func(k)
+
+    return sum_odd(1) + sum_even(2)
 
 
 def next_smaller_dollar(bill):
@@ -85,6 +104,7 @@ def next_smaller_dollar(bill):
         return 5
     elif bill == 5:
         return 1
+
 
 def count_dollars(total):
     """Return the number of ways to make change.
@@ -106,7 +126,14 @@ def count_dollars(total):
     >>> check(HW_SOURCE_FILE, 'count_dollars', ['While', 'For'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if total < 0:
+        return 0
+    elif total == 1:
+        return 1
+    elif total == 5:
+        return 2
+    else:
+        return count_dollars(next_smaller_dollar(total)) + count_dollars(5)
 
 
 def next_larger_dollar(bill):
@@ -121,6 +148,7 @@ def next_larger_dollar(bill):
         return 50
     elif bill == 50:
         return 100
+
 
 def count_dollars_upward(total):
     """Return the number of ways to make change using bills.
@@ -142,12 +170,14 @@ def count_dollars_upward(total):
     >>> check(HW_SOURCE_FILE, 'count_dollars_upward', ['While', 'For'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if total == 0:
+        return 0
 
 
 def print_move(origin, destination):
     """Print instructions to move a disk."""
     print("Move the top disk from rod", origin, "to rod", destination)
+
 
 def move_stack(n, start, end):
     """Print the moves required to move n disks on the start pole to the end
@@ -177,10 +207,18 @@ def move_stack(n, start, end):
     Move the top disk from rod 1 to rod 3
     """
     assert 1 <= start <= 3 and 1 <= end <= 3 and start != end, "Bad start/end"
-    "*** YOUR CODE HERE ***"
+    if n == 1:
+        print_move(start, end)
+        return
+    else:
+        mid = 6 - start - end
+        move_stack(n - 1, start, mid)
+        print_move(start, end)
+        move_stack(n - 1, mid, end)
 
 
 from operator import sub, mul
+
 
 def make_anonymous_factorial():
     """Return the value of an expression that computes factorial.
@@ -193,5 +231,7 @@ def make_anonymous_factorial():
     ...     ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'FunctionDef', 'Recursion'])
     True
     """
-    return 'YOUR_EXPRESSION_HERE'
 
+    return (lambda f: lambda x: f(f, x))(
+        lambda f, x: 1 if x == 1 else x * f(f, (x - 1))
+    )
