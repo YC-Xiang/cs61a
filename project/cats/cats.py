@@ -103,13 +103,16 @@ def accuracy(typed, source):
         return 0
 
     right = 0
-    wrong = 0
 
-    for str1, str2 in typed_words, source_words:
-        if str1 == str2:
+    compare_len = (
+        len(typed_words) if len(typed_words) < len(source_words) else len(source_words)
+    )
+
+    for i in range(compare_len):
+        if typed_words[i] == source_words[i]:
             right += 1
-        else:
-            wrong += 1
+
+    return right / len(typed_words) * 100
 
 
 def wpm(typed, elapsed):
@@ -125,9 +128,7 @@ def wpm(typed, elapsed):
     2.0
     """
     assert elapsed > 0, "Elapsed time must be positive"
-    # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
-    # END PROBLEM 4
+    return 60 / elapsed * (len(typed) / 5)
 
 
 ################
@@ -188,9 +189,24 @@ def autocorrect(typed_word, word_list, diff_function, limit):
     >>> autocorrect("tosting", ["testing", "asking", "fasting"], first_diff, 10)
     'testing'
     """
-    # BEGIN PROBLEM 5
-    "*** YOUR CODE HERE ***"
-    # END PROBLEM 5
+
+    for str in word_list:
+        if typed_word == str:
+            return typed_word
+
+    final_diff = diff_function(typed_word, word_list[0], limit)
+    final_str = word_list[0]
+
+    for str in word_list:
+        diff = diff_function(typed_word, str, limit)
+        if diff < final_diff:
+            final_diff = diff
+            final_str = str
+
+    if limit < final_diff:
+        return typed_word
+    else:
+        return final_str
 
 
 def furry_fixes(typed, source, limit):
@@ -215,9 +231,22 @@ def furry_fixes(typed, source, limit):
     >>> furry_fixes("rose", "hello", big_limit)   # Substitute: r->h, o->e, s->l, e->l, length difference of 1.
     5
     """
-    # BEGIN PROBLEM 6
-    assert False, "Remove this line"
-    # END PROBLEM 6
+    diff = 0
+    compare_len = len(typed) if len(typed) < len(source) else len(source)
+    iter_time = 0
+
+    def f(diff, times):
+        if times >= compare_len:
+            return diff + abs(len(typed) - len(source))
+        if diff > limit:
+            return diff
+        if typed[times] != source[times]:
+            diff += 1
+
+        times += 1
+        return f(diff, times)
+
+    return f(diff, iter_time)
 
 
 def minimum_mewtations(typed, source, limit):
@@ -237,7 +266,6 @@ def minimum_mewtations(typed, source, limit):
     >>> minimum_mewtations("ckiteus", "kittens", big_limit) # ckiteus -> kiteus -> kitteus -> kittens
     3
     """
-    assert False, "Remove this line"
     if ___________:  # Base cases should go here, you may add more base cases as needed.
         # BEGIN
         "*** YOUR CODE HERE ***"
