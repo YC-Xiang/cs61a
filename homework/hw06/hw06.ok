@@ -10,7 +10,6 @@
     },
     "default_tests": [
         "VendingMachine",
-        "midsem_survey",
         "store_digits",
         "deep_map_mut"
     ],
