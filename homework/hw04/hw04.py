@@ -142,8 +142,12 @@ def berry_finder(t):
     >>> berry_finder(t)
     True
     """
-    "*** YOUR CODE HERE ***"
-
+    if label(t) == 'berry':
+        return True
+    for b in branches(t):
+        if berry_finder(b):
+            return True
+    return False
 
 HW_SOURCE_FILE = __file__
 
@@ -157,7 +161,12 @@ def max_path_sum(t):
     >>> max_path_sum(t2) # 5, 2, 10
     17
     """
-    "*** YOUR CODE HERE ***"
+    if is_leaf(t):
+        return label(t)
+    highest_sum = 0
+    for b in branches(t):
+        highest_sum = max(max_path_sum(b), highest_sum)
+    return label(t) + highest_sum
 
 
 def mobile(left, right):

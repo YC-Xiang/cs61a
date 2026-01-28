@@ -126,14 +126,14 @@ def count_dollars(total):
     >>> check(HW_SOURCE_FILE, 'count_dollars', ['While', 'For'])
     True
     """
-    if total < 0:
-        return 0
-    elif total == 1:
-        return 1
-    elif total == 5:
-        return 2
-    else:
-        return count_dollars(next_smaller_dollar(total)) + count_dollars(5)
+    def count_using(total, bill):
+        if total == 0:
+            return 1
+        elif total < 0 or bill is None:
+            return 0
+        else:
+            return count_using(total - bill, bill) + count_using(total, next_smaller_dollar(bill))
+    return count_using(total, 100)
 
 
 def next_larger_dollar(bill):
